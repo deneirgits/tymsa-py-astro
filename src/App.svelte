@@ -1,27 +1,25 @@
 <script lang="ts">
-  import { TimersApi } from "../assets/client/apis/TimersApi";
-
-  import { Configuration } from "../assets/client/runtime";
-
   import { onMount } from "svelte";
-  import type { Timer } from "../assets/client/models";
+  import { get } from "svelte/store";
+  import { TimersApi } from "./client/apis/TimersApi";
+  import type { Timer } from "./client/models";
+  import StopButton from "./lib/StopButton.svelte";
   import Stopwatch from "./lib/Stopwatch.svelte";
+  import { config } from "./stores/config";
 
-  let timer: Timer;
+  let timer: Timer,
+    id = 1,
+    interval: number;
 
   onMount(async () => {
-    const config = new Configuration({
-      basePath: "http://localhost:8000",
-      username: "admin",
-      password: "admin",
-    });
-    const timersApi = new TimersApi(config);
-    timer = await timersApi.timersRetrieve({ id: 1 });
+    const timersApi = new TimersApi(get(config));
+    timer = await timersApi.timersRetrieve({ id: id });
   });
 </script>
 
 <main>
   {#if timer}
-    <Stopwatch seconds={timer.timesince} />
+    <StopButton {id} {interval} />
+    <Stopwatch bind:interval {timer} />
   {/if}
 </main>

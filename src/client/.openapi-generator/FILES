@@ -7,5 +7,6 @@ models/PatchedProject.ts
 models/PatchedTimer.ts
 models/Project.ts
 models/Timer.ts
+models/TimerStop.ts
 models/index.ts
 runtime.ts

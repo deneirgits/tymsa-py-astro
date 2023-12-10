@@ -42,13 +42,19 @@ export interface Timer {
      * @type {Date}
      * @memberof Timer
      */
-    endDatetime?: Date | null;
+    readonly endDatetime: Date | null;
     /**
      * 
      * @type {string}
      * @memberof Timer
      */
     note?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Timer
+     */
+    readonly duration: string | null;
     /**
      * 
      * @type {string}
@@ -65,6 +71,8 @@ export function instanceOfTimer(value: object): boolean {
     isInstance = isInstance && "url" in value;
     isInstance = isInstance && "timesince" in value;
     isInstance = isInstance && "startDatetime" in value;
+    isInstance = isInstance && "endDatetime" in value;
+    isInstance = isInstance && "duration" in value;
     isInstance = isInstance && "project" in value;
 
     return isInstance;
@@ -83,8 +91,9 @@ export function TimerFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tim
         'url': json['url'],
         'timesince': json['timesince'],
         'startDatetime': (new Date(json['start_datetime'])),
-        'endDatetime': !exists(json, 'end_datetime') ? undefined : (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
+        'endDatetime': (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
         'note': !exists(json, 'note') ? undefined : json['note'],
+        'duration': json['duration'],
         'project': json['project'],
     };
 }
@@ -98,7 +107,6 @@ export function TimerToJSON(value?: Timer | null): any {
     }
     return {
         
-        'end_datetime': value.endDatetime === undefined ? undefined : (value.endDatetime === null ? null : value.endDatetime.toISOString()),
         'note': value.note,
         'project': value.project,
     };

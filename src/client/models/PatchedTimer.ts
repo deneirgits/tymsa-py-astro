@@ -42,13 +42,19 @@ export interface PatchedTimer {
      * @type {Date}
      * @memberof PatchedTimer
      */
-    endDatetime?: Date | null;
+    readonly endDatetime?: Date | null;
     /**
      * 
      * @type {string}
      * @memberof PatchedTimer
      */
     note?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedTimer
+     */
+    readonly duration?: string | null;
     /**
      * 
      * @type {string}
@@ -81,6 +87,7 @@ export function PatchedTimerFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'startDatetime': !exists(json, 'start_datetime') ? undefined : (new Date(json['start_datetime'])),
         'endDatetime': !exists(json, 'end_datetime') ? undefined : (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
         'note': !exists(json, 'note') ? undefined : json['note'],
+        'duration': !exists(json, 'duration') ? undefined : json['duration'],
         'project': !exists(json, 'project') ? undefined : json['project'],
     };
 }
@@ -94,7 +101,6 @@ export function PatchedTimerToJSON(value?: PatchedTimer | null): any {
     }
     return {
         
-        'end_datetime': value.endDatetime === undefined ? undefined : (value.endDatetime === null ? null : value.endDatetime.toISOString()),
         'note': value.note,
         'project': value.project,
     };

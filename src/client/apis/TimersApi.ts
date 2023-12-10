@@ -17,12 +17,15 @@ import * as runtime from '../runtime';
 import type {
   PatchedTimer,
   Timer,
+  TimerStop,
 } from '../models/index';
 import {
     PatchedTimerFromJSON,
     PatchedTimerToJSON,
     TimerFromJSON,
     TimerToJSON,
+    TimerStopFromJSON,
+    TimerStopToJSON,
 } from '../models/index';
 
 export interface TimersCreateRequest {
@@ -40,6 +43,11 @@ export interface TimersPartialUpdateRequest {
 
 export interface TimersRetrieveRequest {
     id: number;
+}
+
+export interface TimersStopRequest {
+    id: number;
+    timerStop?: TimerStop;
 }
 
 export interface TimersUpdateRequest {
@@ -69,7 +77,7 @@ export class TimersApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
         }
         const response = await this.request({
-            path: `/timers/`,
+            path: `/api/v1/timers/`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -101,7 +109,7 @@ export class TimersApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
         }
         const response = await this.request({
-            path: `/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/v1/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -127,7 +135,7 @@ export class TimersApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
         }
         const response = await this.request({
-            path: `/timers/`,
+            path: `/api/v1/timers/`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -160,7 +168,7 @@ export class TimersApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
         }
         const response = await this.request({
-            path: `/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/v1/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
@@ -192,7 +200,7 @@ export class TimersApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
         }
         const response = await this.request({
-            path: `/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/v1/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -205,6 +213,40 @@ export class TimersApi extends runtime.BaseAPI {
      */
     async timersRetrieve(requestParameters: TimersRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Timer> {
         const response = await this.timersRetrieveRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async timersStopRaw(requestParameters: TimersStopRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TimerStop>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling timersStop.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
+            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
+        }
+        const response = await this.request({
+            path: `/api/v1/timers/{id}/stop/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: TimerStopToJSON(requestParameters.timerStop),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TimerStopFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async timersStop(requestParameters: TimersStopRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TimerStop> {
+        const response = await this.timersStopRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -229,7 +271,7 @@ export class TimersApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
         }
         const response = await this.request({
-            path: `/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/v1/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
