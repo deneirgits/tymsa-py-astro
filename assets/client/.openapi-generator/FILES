@@ -1,0 +1,11 @@
+.openapi-generator-ignore
+apis/ProjectsApi.ts
+apis/TimersApi.ts
+apis/index.ts
+index.ts
+models/PatchedProject.ts
+models/PatchedTimer.ts
+models/Project.ts
+models/Timer.ts
+models/index.ts
+runtime.ts
