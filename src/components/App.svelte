@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { TimersApi } from "./client/apis/TimersApi";
-  import type { Timer } from "./client/models";
-  import StopButton from "./lib/StopButton.svelte";
-  import Stopwatch from "./lib/Stopwatch.svelte";
-  import { config } from "./stores/config";
+  import { TimersApi } from "../client/apis/TimersApi";
+  import type { Timer } from "../client/models";
+  import StopButton from "./StopButton.svelte";
+  import Stopwatch from "./Stopwatch.svelte";
+  import { config } from "../stores/config";
 
   let timer: Timer,
     id = 1,
