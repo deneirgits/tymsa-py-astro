@@ -1,6 +1,6 @@
-.openapi-generator-ignore
 apis/ProjectsApi.ts
 apis/TimersApi.ts
+apis/TokenApi.ts
 apis/index.ts
 index.ts
 models/PatchedProject.ts
@@ -8,5 +8,8 @@ models/PatchedTimer.ts
 models/Project.ts
 models/Timer.ts
 models/TimerStop.ts
+models/TokenObtainPair.ts
+models/TokenRefresh.ts
+models/TokenVerify.ts
 models/index.ts
 runtime.ts

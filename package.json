@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.3.1",
+    "@astrojs/node": "^7.0.1",
     "@astrojs/svelte": "^5.0.1",
     "@astrojs/tailwind": "^5.0.3",
     "astro": "^4.0.4",
@@ -19,6 +20,9 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.10"
+    "@openapitools/openapi-generator-cli": "^2.7.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "daisyui": "^4.4.19"
   }
 }

@@ -1,8 +1,18 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import App from "../components/App.svelte";
+
+import { GET as getTimer } from "../pages/api/timer";
+import { GET as refreshToken } from "../pages/api/auth/refresh";
+
+if (Astro.cookies.get("accessToken") === undefined) {
+  return refreshToken(Astro);
+}
+
+const response = await getTimer(Astro);
+const data = await response.json();
 ---
 
 <Layout title="Home">
-  <App client:load />
+  <App client:load timer={data.timer} />
 </Layout>
