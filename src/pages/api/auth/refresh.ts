@@ -9,7 +9,7 @@ export const GET: APIRoute = async ({ cookies, redirect }) => {
   }
 
   const tokenApi = new TokenApi(
-    new Configuration({ basePath: "http://127.0.0.1:8000" })
+    new Configuration({ basePath: import.meta.env.BASE_PATH })
   );
   const refresh = TokenRefreshFromJSON({ refresh: refreshToken.value });
   const tokens = await tokenApi.tokenRefreshCreate({ tokenRefresh: refresh });

@@ -5,15 +5,14 @@
   import Stopwatch from "./Stopwatch.svelte";
 
   export let timer: Timer;
-  let id = 2,
-    interval: number;
+  let interval: number;
 
   onMount(async () => {});
 </script>
 
 <main>
   {#if timer}
-    <StopButton {id} {interval} />
+    <StopButton {interval} />
     <Stopwatch bind:interval {timer} />
   {/if}
 </main>

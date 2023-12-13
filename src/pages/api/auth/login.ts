@@ -16,7 +16,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   }
 
   const tokenApi = new TokenApi(
-    new Configuration({ basePath: "http://127.0.0.1:8000" })
+    new Configuration({ basePath: import.meta.env.BASE_PATH })
   );
   const creds = TokenObtainPairFromJSON({ "username": username, "password": password });
   const tokens = await tokenApi.tokenCreate({ tokenObtainPair: creds });
