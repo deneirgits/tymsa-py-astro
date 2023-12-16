@@ -1,11 +1,9 @@
 import type { APIContext, APIRoute } from "astro";
-import { Configuration, TimersApi } from "../../client";
+import { TimersApi } from "../../../client";
+import { getConfig } from "../../../utils/config";
 
 export const GET: APIRoute = async ({ cookies }: APIContext) => {
-  const timersApi = new TimersApi(
-    new Configuration({ basePath: import.meta.env.BASE_PATH, accessToken: cookies.get("accessToken")!.value })
-  );
-
+  const timersApi = new TimersApi(getConfig(cookies));
   const timer = await timersApi.timersCurrentRetrieve();
 
   return new Response(
@@ -16,9 +14,8 @@ export const GET: APIRoute = async ({ cookies }: APIContext) => {
 };
 
 export const POST: APIRoute = async ({ cookies }: APIContext) => {
-  const timersApi = new TimersApi(
-    new Configuration({ basePath: import.meta.env.BASE_PATH, accessToken: cookies.get("accessToken")!.value })
-  );
+  const timersApi = new TimersApi(getConfig(cookies));
+
   await timersApi.timersCurrentStop();
 
   return new Response(

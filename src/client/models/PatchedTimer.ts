@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ProjectRead } from './ProjectRead';
+import {
+    ProjectReadFromJSON,
+    ProjectReadFromJSONTyped,
+    ProjectReadToJSON,
+} from './ProjectRead';
+
 /**
  * 
  * @export
@@ -31,6 +38,12 @@ export interface PatchedTimer {
      * @memberof PatchedTimer
      */
     readonly timesince?: number;
+    /**
+     * 
+     * @type {ProjectRead}
+     * @memberof PatchedTimer
+     */
+    project?: ProjectRead;
     /**
      * 
      * @type {Date}
@@ -55,12 +68,6 @@ export interface PatchedTimer {
      * @memberof PatchedTimer
      */
     readonly duration?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedTimer
-     */
-    project?: string;
 }
 
 /**
@@ -84,11 +91,11 @@ export function PatchedTimerFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'url': !exists(json, 'url') ? undefined : json['url'],
         'timesince': !exists(json, 'timesince') ? undefined : json['timesince'],
+        'project': !exists(json, 'project') ? undefined : ProjectReadFromJSON(json['project']),
         'startDatetime': !exists(json, 'start_datetime') ? undefined : (new Date(json['start_datetime'])),
         'endDatetime': !exists(json, 'end_datetime') ? undefined : (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
         'note': !exists(json, 'note') ? undefined : json['note'],
         'duration': !exists(json, 'duration') ? undefined : json['duration'],
-        'project': !exists(json, 'project') ? undefined : json['project'],
     };
 }
 
@@ -101,8 +108,8 @@ export function PatchedTimerToJSON(value?: PatchedTimer | null): any {
     }
     return {
         
+        'project': ProjectReadToJSON(value.project),
         'note': value.note,
-        'project': value.project,
     };
 }
 

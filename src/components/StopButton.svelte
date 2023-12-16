@@ -3,7 +3,7 @@
 
   async function stopTimer() {
     clearInterval(interval);
-    await fetch("/api/timer", { method: "post" });
+    await fetch("/api/timer/current", { method: "post" });
   }
 </script>
 

@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ProjectRead } from './ProjectRead';
+import {
+    ProjectReadFromJSON,
+    ProjectReadFromJSONTyped,
+    ProjectReadToJSON,
+} from './ProjectRead';
+
 /**
  * 
  * @export
@@ -31,6 +38,12 @@ export interface Timer {
      * @memberof Timer
      */
     readonly timesince: number;
+    /**
+     * 
+     * @type {ProjectRead}
+     * @memberof Timer
+     */
+    project: ProjectRead;
     /**
      * 
      * @type {Date}
@@ -55,12 +68,6 @@ export interface Timer {
      * @memberof Timer
      */
     readonly duration: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof Timer
-     */
-    project: string;
 }
 
 /**
@@ -70,10 +77,10 @@ export function instanceOfTimer(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "url" in value;
     isInstance = isInstance && "timesince" in value;
+    isInstance = isInstance && "project" in value;
     isInstance = isInstance && "startDatetime" in value;
     isInstance = isInstance && "endDatetime" in value;
     isInstance = isInstance && "duration" in value;
-    isInstance = isInstance && "project" in value;
 
     return isInstance;
 }
@@ -90,11 +97,11 @@ export function TimerFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tim
         
         'url': json['url'],
         'timesince': json['timesince'],
+        'project': ProjectReadFromJSON(json['project']),
         'startDatetime': (new Date(json['start_datetime'])),
         'endDatetime': (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
         'note': !exists(json, 'note') ? undefined : json['note'],
         'duration': json['duration'],
-        'project': json['project'],
     };
 }
 
@@ -107,8 +114,8 @@ export function TimerToJSON(value?: Timer | null): any {
     }
     return {
         
+        'project': ProjectReadToJSON(value.project),
         'note': value.note,
-        'project': value.project,
     };
 }
 

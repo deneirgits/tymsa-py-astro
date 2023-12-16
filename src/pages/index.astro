@@ -1,18 +1,24 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import App from "../components/App.svelte";
+import CurrentTimer from "../components/CurrentTimer.svelte";
 
-import { GET as getTimer } from "../pages/api/timer";
+import { GET as getTimer } from "./api/timer/current";
 import { GET as refreshToken } from "../pages/api/auth/refresh";
+import { GET as getTimersList } from "./api/timer/list";
+import TimersList from "../components/TimersList.svelte";
 
 if (Astro.cookies.get("accessToken") === undefined) {
   return refreshToken(Astro);
 }
 
-const response = await getTimer(Astro);
-const data = await response.json();
+let response = await getTimer(Astro);
+const timerData = await response.json();
+
+response = await getTimersList(Astro);
+const timersListData = await response.json();
 ---
 
 <Layout title="Home">
-  <App client:load timer={data.timer} />
+  <CurrentTimer client:load timer={timerData.timer} />
+  <TimersList client:visible timers={timersListData.timers} />
 </Layout>

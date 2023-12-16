@@ -6,6 +6,7 @@ index.ts
 models/PatchedProject.ts
 models/PatchedTimer.ts
 models/Project.ts
+models/ProjectRead.ts
 models/Timer.ts
 models/TimerStop.ts
 models/TokenObtainPair.ts
