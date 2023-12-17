@@ -43,7 +43,7 @@ export interface Timer {
      * @type {ProjectRead}
      * @memberof Timer
      */
-    project: ProjectRead;
+    readonly project: ProjectRead;
     /**
      * 
      * @type {Date}
@@ -114,7 +114,6 @@ export function TimerToJSON(value?: Timer | null): any {
     }
     return {
         
-        'project': ProjectReadToJSON(value.project),
         'note': value.note,
     };
 }

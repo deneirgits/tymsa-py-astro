@@ -8,7 +8,9 @@
 {#each timers as timer}
   <div class="block">
     {formatTime(timer.timesince)}
-    {timer.project.name}
+    {#if timer.project}
+      {timer.project.name}
+    {/if}
     {timer.note}
   </div>
 {/each}

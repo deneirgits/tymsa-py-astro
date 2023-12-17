@@ -8,15 +8,12 @@
 </script>
 
 <main>
-  {#if timer.startDatetime != null}
-    <StopButton {interval} />
-    <TimerDisplay
-      bind:interval
-      seconds={timer.timesince}
-      endDatetime={timer.endDatetime} />
+  {#if timer}
+    <StopButton on:new {interval} />
+    <TimerDisplay bind:interval {timer} />
     {timer.note}
-    {timer.project.name}
-  {:else}
-    <TimerDisplay bind:interval seconds={0} endDatetime={new Date()} />
+    {#if timer.project}
+      {timer.project.name}
+    {/if}
   {/if}
 </main>

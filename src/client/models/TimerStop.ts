@@ -54,7 +54,7 @@ export interface TimerStop {
      * @type {number}
      * @memberof TimerStop
      */
-    readonly project: number;
+    readonly project: number | null;
 }
 
 /**

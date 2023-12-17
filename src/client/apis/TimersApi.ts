@@ -15,43 +15,22 @@
 
 import * as runtime from '../runtime';
 import type {
-  PatchedTimer,
   Timer,
   TimerStop,
 } from '../models/index';
 import {
-    PatchedTimerFromJSON,
-    PatchedTimerToJSON,
     TimerFromJSON,
     TimerToJSON,
     TimerStopFromJSON,
     TimerStopToJSON,
 } from '../models/index';
 
-export interface TimersCreateRequest {
-    timer: Timer;
-}
-
-export interface TimersCurrentStopRequest {
+export interface TimersCurrentNewRequest {
     timerStop?: TimerStop;
-}
-
-export interface TimersDestroyRequest {
-    id: number;
-}
-
-export interface TimersPartialUpdateRequest {
-    id: number;
-    patchedTimer?: PatchedTimer;
 }
 
 export interface TimersRetrieveRequest {
     id: number;
-}
-
-export interface TimersUpdateRequest {
-    id: number;
-    timer: Timer;
 }
 
 /**
@@ -61,11 +40,7 @@ export class TimersApi extends runtime.BaseAPI {
 
     /**
      */
-    async timersCreateRaw(requestParameters: TimersCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Timer>> {
-        if (requestParameters.timer === null || requestParameters.timer === undefined) {
-            throw new runtime.RequiredError('timer','Required parameter requestParameters.timer was null or undefined when calling timersCreate.');
-        }
-
+    async timersCurrentNewRaw(requestParameters: TimersCurrentNewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TimerStop>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -81,20 +56,20 @@ export class TimersApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/v1/timers/`,
+            path: `/api/v1/timers/new/`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TimerToJSON(requestParameters.timer),
+            body: TimerStopToJSON(requestParameters.timerStop),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TimerFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TimerStopFromJSON(jsonValue));
     }
 
     /**
      */
-    async timersCreate(requestParameters: TimersCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Timer> {
-        const response = await this.timersCreateRaw(requestParameters, initOverrides);
+    async timersCurrentNew(requestParameters: TimersCurrentNewRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TimerStop> {
+        const response = await this.timersCurrentNewRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -132,76 +107,6 @@ export class TimersApi extends runtime.BaseAPI {
 
     /**
      */
-    async timersCurrentStopRaw(requestParameters: TimersCurrentStopRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TimerStop>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("jwtAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/timers/stop/`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: TimerStopToJSON(requestParameters.timerStop),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TimerStopFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async timersCurrentStop(requestParameters: TimersCurrentStopRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TimerStop> {
-        const response = await this.timersCurrentStopRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async timersDestroyRaw(requestParameters: TimersDestroyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling timersDestroy.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("jwtAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     */
-    async timersDestroy(requestParameters: TimersDestroyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.timersDestroyRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     */
     async timersListRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Timer>>> {
         const queryParameters: any = {};
 
@@ -229,45 +134,6 @@ export class TimersApi extends runtime.BaseAPI {
      */
     async timersList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Timer>> {
         const response = await this.timersListRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async timersPartialUpdateRaw(requestParameters: TimersPartialUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Timer>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling timersPartialUpdate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("jwtAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: PatchedTimerToJSON(requestParameters.patchedTimer),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TimerFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async timersPartialUpdate(requestParameters: TimersPartialUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Timer> {
-        const response = await this.timersPartialUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -304,49 +170,6 @@ export class TimersApi extends runtime.BaseAPI {
      */
     async timersRetrieve(requestParameters: TimersRetrieveRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Timer> {
         const response = await this.timersRetrieveRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async timersUpdateRaw(requestParameters: TimersUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Timer>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling timersUpdate.');
-        }
-
-        if (requestParameters.timer === null || requestParameters.timer === undefined) {
-            throw new runtime.RequiredError('timer','Required parameter requestParameters.timer was null or undefined when calling timersUpdate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("jwtAuth", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/v1/timers/{id}/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: TimerToJSON(requestParameters.timer),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TimerFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async timersUpdate(requestParameters: TimersUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Timer> {
-        const response = await this.timersUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

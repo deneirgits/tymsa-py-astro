@@ -1,19 +1,26 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { formatTime } from "../utils/formatTime";
+  import type { Timer } from "../client";
 
-  export let interval: number, seconds: number, endDatetime: Date | null;
-  let display: string;
+  export let interval: number, timer: Timer;
+  let display: string, seconds: number;
 
   onMount(async () => {
+    await resetInterval(timer);
+  });
+
+  async function resetInterval(timer: Timer) {
     clearInterval(interval);
-    if (endDatetime === null) {
+    if (timer.endDatetime === null) {
       interval = setInterval(() => {
         seconds++;
       }, 1000);
     }
-  });
+  }
 
+  $: seconds = timer.timesince;
+  $: resetInterval(timer);
   $: display = formatTime(seconds);
 </script>
 

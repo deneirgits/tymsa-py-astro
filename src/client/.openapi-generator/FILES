@@ -4,7 +4,6 @@ apis/TokenApi.ts
 apis/index.ts
 index.ts
 models/PatchedProject.ts
-models/PatchedTimer.ts
 models/Project.ts
 models/ProjectRead.ts
 models/Timer.ts
