@@ -4,10 +4,11 @@ apis/TokenApi.ts
 apis/index.ts
 index.ts
 models/PatchedProject.ts
+models/PatchedTimerUpdate.ts
 models/Project.ts
-models/ProjectRead.ts
 models/Timer.ts
-models/TimerStop.ts
+models/TimerNew.ts
+models/TimerUpdate.ts
 models/TokenObtainPair.ts
 models/TokenRefresh.ts
 models/TokenVerify.ts

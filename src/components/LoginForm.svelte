@@ -2,7 +2,6 @@
   let responseMessage: string;
 
   async function submitForm(e: SubmitEvent) {
-    e.preventDefault();
     const formData = new FormData(e.currentTarget as HTMLFormElement);
     const response = await fetch("/api/auth/login", {
       method: "POST",
@@ -18,7 +17,7 @@
   }
 </script>
 
-<form on:submit={submitForm}>
+<form on:submit|preventDefault={submitForm}>
   <label class="block">
     <span class="text-gray-700">Username</span>
     <input

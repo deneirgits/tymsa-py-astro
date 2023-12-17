@@ -15,18 +15,29 @@
 
 import * as runtime from '../runtime';
 import type {
+  PatchedTimerUpdate,
   Timer,
-  TimerStop,
+  TimerNew,
+  TimerUpdate,
 } from '../models/index';
 import {
+    PatchedTimerUpdateFromJSON,
+    PatchedTimerUpdateToJSON,
     TimerFromJSON,
     TimerToJSON,
-    TimerStopFromJSON,
-    TimerStopToJSON,
+    TimerNewFromJSON,
+    TimerNewToJSON,
+    TimerUpdateFromJSON,
+    TimerUpdateToJSON,
 } from '../models/index';
 
 export interface TimersCurrentNewRequest {
-    timerStop?: TimerStop;
+    timerNew?: TimerNew;
+}
+
+export interface TimersEditRequest {
+    id: string;
+    patchedTimerUpdate?: PatchedTimerUpdate;
 }
 
 export interface TimersRetrieveRequest {
@@ -40,7 +51,7 @@ export class TimersApi extends runtime.BaseAPI {
 
     /**
      */
-    async timersCurrentNewRaw(requestParameters: TimersCurrentNewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TimerStop>> {
+    async timersCurrentNewRaw(requestParameters: TimersCurrentNewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TimerNew>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -60,15 +71,15 @@ export class TimersApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TimerStopToJSON(requestParameters.timerStop),
+            body: TimerNewToJSON(requestParameters.timerNew),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TimerStopFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TimerNewFromJSON(jsonValue));
     }
 
     /**
      */
-    async timersCurrentNew(requestParameters: TimersCurrentNewRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TimerStop> {
+    async timersCurrentNew(requestParameters: TimersCurrentNewRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TimerNew> {
         const response = await this.timersCurrentNewRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -102,6 +113,45 @@ export class TimersApi extends runtime.BaseAPI {
      */
     async timersCurrentRetrieve(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Timer> {
         const response = await this.timersCurrentRetrieveRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async timersEditRaw(requestParameters: TimersEditRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TimerUpdate>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling timersEdit.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("jwtAuth", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/v1/timers/{id}/edit/`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PatchedTimerUpdateToJSON(requestParameters.patchedTimerUpdate),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TimerUpdateFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async timersEdit(requestParameters: TimersEditRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TimerUpdate> {
+        const response = await this.timersEditRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

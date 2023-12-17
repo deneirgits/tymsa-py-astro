@@ -1,10 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './PatchedProject';
+export * from './PatchedTimerUpdate';
 export * from './Project';
-export * from './ProjectRead';
 export * from './Timer';
-export * from './TimerStop';
+export * from './TimerNew';
+export * from './TimerUpdate';
 export * from './TokenObtainPair';
 export * from './TokenRefresh';
 export * from './TokenVerify';

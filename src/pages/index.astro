@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import { GET as getTimer } from "./api/timer/current";
 import { GET as refreshToken } from "../pages/api/auth/refresh";
 import { GET as getTimersList } from "./api/timer/list";
-import Timers from "../components/Timers.svelte";
+import TimersPanel from "../components/TimersPanel.svelte";
 
 if (Astro.cookies.get("accessToken") === undefined) {
   return refreshToken(Astro);
@@ -19,7 +19,7 @@ const timersListData = await response.json();
 
 <Layout title="Home">
   <main>
-    <Timers
+    <TimersPanel
       client:load
       timer={timerData.timer}
       timers={timersListData.timers}

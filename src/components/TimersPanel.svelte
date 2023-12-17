@@ -25,5 +25,9 @@
       await getTimers();
     }}
     {timer} />
-  <TimersList {timers} />
+  <TimersList
+    on:timerEdit={async () => {
+      await getTimers();
+    }}
+    {timers} />
 </div>

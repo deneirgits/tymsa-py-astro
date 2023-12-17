@@ -21,6 +21,12 @@ import { exists, mapValues } from '../runtime';
 export interface Project {
     /**
      * 
+     * @type {number}
+     * @memberof Project
+     */
+    readonly id: number;
+    /**
+     * 
      * @type {string}
      * @memberof Project
      */
@@ -44,6 +50,7 @@ export interface Project {
  */
 export function instanceOfProject(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
     isInstance = isInstance && "url" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "color" in value;
@@ -61,6 +68,7 @@ export function ProjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
     }
     return {
         
+        'id': json['id'],
         'url': json['url'],
         'name': json['name'],
         'color': json['color'],

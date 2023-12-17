@@ -13,107 +13,85 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Project } from './Project';
-import {
-    ProjectFromJSON,
-    ProjectFromJSONTyped,
-    ProjectToJSON,
-} from './Project';
-
 /**
  * 
  * @export
- * @interface Timer
+ * @interface TimerNew
  */
-export interface Timer {
+export interface TimerNew {
     /**
      * 
      * @type {number}
-     * @memberof Timer
+     * @memberof TimerNew
      */
     readonly id: number;
     /**
      * 
-     * @type {string}
-     * @memberof Timer
-     */
-    readonly url: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Timer
-     */
-    readonly timesince: number;
-    /**
-     * 
-     * @type {Project}
-     * @memberof Timer
-     */
-    project: Project;
-    /**
-     * 
      * @type {Date}
-     * @memberof Timer
+     * @memberof TimerNew
      */
     readonly startDatetime: Date;
     /**
      * 
      * @type {Date}
-     * @memberof Timer
+     * @memberof TimerNew
      */
     readonly endDatetime: Date | null;
     /**
      * 
      * @type {string}
-     * @memberof Timer
+     * @memberof TimerNew
      */
-    note?: string;
+    readonly note: string;
     /**
      * 
      * @type {string}
-     * @memberof Timer
+     * @memberof TimerNew
      */
     readonly duration: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof TimerNew
+     */
+    readonly project: number | null;
 }
 
 /**
- * Check if a given object implements the Timer interface.
+ * Check if a given object implements the TimerNew interface.
  */
-export function instanceOfTimer(value: object): boolean {
+export function instanceOfTimerNew(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "url" in value;
-    isInstance = isInstance && "timesince" in value;
-    isInstance = isInstance && "project" in value;
     isInstance = isInstance && "startDatetime" in value;
     isInstance = isInstance && "endDatetime" in value;
+    isInstance = isInstance && "note" in value;
     isInstance = isInstance && "duration" in value;
+    isInstance = isInstance && "project" in value;
 
     return isInstance;
 }
 
-export function TimerFromJSON(json: any): Timer {
-    return TimerFromJSONTyped(json, false);
+export function TimerNewFromJSON(json: any): TimerNew {
+    return TimerNewFromJSONTyped(json, false);
 }
 
-export function TimerFromJSONTyped(json: any, ignoreDiscriminator: boolean): Timer {
+export function TimerNewFromJSONTyped(json: any, ignoreDiscriminator: boolean): TimerNew {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'url': json['url'],
-        'timesince': json['timesince'],
-        'project': ProjectFromJSON(json['project']),
         'startDatetime': (new Date(json['start_datetime'])),
         'endDatetime': (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
-        'note': !exists(json, 'note') ? undefined : json['note'],
+        'note': json['note'],
         'duration': json['duration'],
+        'project': json['project'],
     };
 }
 
-export function TimerToJSON(value?: Timer | null): any {
+export function TimerNewToJSON(value?: TimerNew | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -122,8 +100,6 @@ export function TimerToJSON(value?: Timer | null): any {
     }
     return {
         
-        'project': ProjectToJSON(value.project),
-        'note': value.note,
     };
 }
 

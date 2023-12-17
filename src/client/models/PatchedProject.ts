@@ -21,6 +21,12 @@ import { exists, mapValues } from '../runtime';
 export interface PatchedProject {
     /**
      * 
+     * @type {number}
+     * @memberof PatchedProject
+     */
+    readonly id?: number;
+    /**
+     * 
      * @type {string}
      * @memberof PatchedProject
      */
@@ -58,6 +64,7 @@ export function PatchedProjectFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'url': !exists(json, 'url') ? undefined : json['url'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'color': !exists(json, 'color') ? undefined : json['color'],
