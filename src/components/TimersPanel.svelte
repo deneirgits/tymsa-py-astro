@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Timer } from "../client";
+  import type { Project, Timer } from "../client";
   import CurrentTimer from "./CurrentTimer.svelte";
   import TimersList from "./TimersList.svelte";
 
-  export let timer: Timer, timers: Array<Timer>;
+  export let timer: Timer, timers: Array<Timer>, projects: Array<Project>;
 
   async function getNewTimer() {
     let response = await fetch("/api/timer/current");
@@ -29,5 +29,6 @@
     on:timerEdit={async () => {
       await getTimers();
     }}
-    {timers} />
+    {timers}
+    {projects} />
 </div>

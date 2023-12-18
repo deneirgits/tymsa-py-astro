@@ -1,28 +1,31 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-import { GET as getTimer } from "./api/timer/current";
+import { GET as getCurrentTimer } from "./api/timer/current";
 import { GET as refreshToken } from "../pages/api/auth/refresh";
-import { GET as getTimersList } from "./api/timer/list";
+import { GET as getTimers } from "./api/timer/list";
+import { GET as getProjects } from "./api/project/list";
 import TimersPanel from "../components/TimersPanel.svelte";
 
 if (Astro.cookies.get("accessToken") === undefined) {
   return refreshToken(Astro);
 }
 
-let response = await getTimer(Astro);
-const timerData = await response.json();
+let response = await getCurrentTimer(Astro);
+let data = await response.json();
+const timer = data.timer;
 
-response = await getTimersList(Astro);
-const timersListData = await response.json();
+response = await getTimers(Astro);
+data = await response.json();
+const timers = data.timers;
+
+response = await getProjects(Astro);
+data = await response.json();
+const projects = data.projects;
 ---
 
 <Layout title="Home">
   <main>
-    <TimersPanel
-      client:load
-      timer={timerData.timer}
-      timers={timersListData.timers}
-    />
+    <TimersPanel client:load {timer} {timers} {projects} />
   </main>
 </Layout>
