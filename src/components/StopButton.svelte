@@ -12,4 +12,4 @@
   }
 </script>
 
-<button on:click={async () => await newTimer()}>Stop</button>
+<button on:click={async () => await newTimer()} class="block">Stop</button>
