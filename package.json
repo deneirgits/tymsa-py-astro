@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "generate-pwa-assets": "pwa-assets-generator"
   },
   "dependencies": {
     "@astrojs/check": "^0.3.1",
@@ -23,6 +24,10 @@
     "@openapitools/openapi-generator-cli": "^2.7.0",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
-    "daisyui": "^4.4.19"
+    "@vite-pwa/assets-generator": "^0.2.1",
+    "@vite-pwa/astro": "^0.2.0",
+    "daisyui": "^4.4.19",
+    "vite-plugin-pwa": "^0.17.4",
+    "workbox-window": "^7.0.0"
   }
 }

@@ -6,7 +6,7 @@
   let modal: HTMLDialogElement,
     id: number,
     note: string,
-    noteInput: HTMLInputElement,
+    projectSelect: HTMLSelectElement,
     project: number | string,
     selectedTimer: Timer | undefined;
   const dispatch = createEventDispatcher();
@@ -18,12 +18,12 @@
   export async function openModal(event: CustomEvent) {
     selectedTimer = event.detail;
     modal.classList.add("modal-open");
-    noteInput.focus();
+    projectSelect.focus();
   }
   export async function closeModal() {
     selectedTimer = undefined;
     modal.classList.remove("modal-open");
-    noteInput.focus();
+    projectSelect.focus();
   }
 
   async function submitForm(e: SubmitEvent) {
@@ -69,7 +69,7 @@
       <input type="hidden" name="id" bind:value={id} />
       <label>
         <span>Project</span>
-        <select name="project" value={project}>
+        <select name="project" value={project} bind:this={projectSelect}>
           <option value="0">--------</option>
           {#each projects as project}
             <option value={project.id}>{project.name}</option>
@@ -78,12 +78,7 @@
       </label>
       <label class="block">
         <span>Note</span>
-        <input
-          bind:this={noteInput}
-          value={note}
-          type="text"
-          name="note"
-          autocomplete="off" />
+        <input value={note} type="text" name="note" autocomplete="off" />
       </label>
       <div class="modal-action">
         <button class="btn btn-primary" type="submit">Save</button>

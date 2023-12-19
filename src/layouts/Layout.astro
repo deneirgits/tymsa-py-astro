@@ -1,14 +1,21 @@
 ---
+import { pwaInfo } from "virtual:pwa-info";
+
 const { title } = Astro.props;
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/tymsa.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/tymsa.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#E56717" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | Tymsa</title>
+    <script src="/src/utils/pwa.ts"></script>
+    {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
   </head>
   <body class="prose">
     <slot />

@@ -24,6 +24,7 @@
     name="username"
     class="mt-1 block w-full"
     placeholder="Username"
+    autocomplete="username"
     required />
   <input
     type="password"
@@ -31,6 +32,7 @@
     name="password"
     class="mt-1 block w-full"
     placeholder="Password"
+    autocomplete="current-password"
     required />
   <input type="submit" value="Send" class="btn btn-primary btn-block" />
   {#if responseMessage}
