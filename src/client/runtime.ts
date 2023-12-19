@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Tymr API
- * API for Tymr time-tracking
+ * Tymsa API
+ * API for Tymsa time-tracking
  *
  * The version of the OpenAPI document: 1.0.0
  * 

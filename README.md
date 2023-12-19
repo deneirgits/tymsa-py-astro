@@ -1,2 +1,2 @@
-# Tymr
+# Tymsa
 A time-tracking app
