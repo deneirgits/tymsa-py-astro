@@ -28,10 +28,14 @@
 
   async function submitForm(e: SubmitEvent) {
     const formData = new FormData(e.currentTarget as HTMLFormElement);
-    await fetch("/api/timer/edit", {
+    const res = await fetch("/api/timer/edit", {
       method: "post",
       body: formData,
     });
+
+    if (res.redirected == true) {
+      window.location.href = res.url;
+    }
 
     await closeModal();
     dispatch("timerEdit");

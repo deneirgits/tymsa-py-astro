@@ -2,7 +2,7 @@
 import LoginForm from "../components/LoginForm.svelte";
 import Layout from "../layouts/Layout.astro";
 
-if (Astro.cookies.get("accessToken")) {
+if (Astro.cookies.get("refreshToken")) {
   return Astro.redirect("/");
 }
 ---

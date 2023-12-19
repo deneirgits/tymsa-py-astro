@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { Configuration, TokenApi, TokenObtainPairFromJSON } from "../../../client";
+import { setTokens } from "../../../utils/setTokens";
 
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   const data = await request.formData();
@@ -8,9 +9,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
 
   if (!username || !password) {
     return new Response(
-      JSON.stringify({
-        message: "Missing required fields",
-      }),
+      JSON.stringify({ message: "Missing required fields" }),
       { status: 400 }
     );
   }
@@ -19,10 +18,16 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     new Configuration({ basePath: import.meta.env.BASE_PATH })
   );
   const creds = TokenObtainPairFromJSON({ "username": username, "password": password });
-  const tokens = await tokenApi.tokenCreate({ tokenObtainPair: creds });
 
-  cookies.set("accessToken", tokens.access, { httpOnly: true, maxAge: 60 * 5, path: "/" });
-  cookies.set("refreshToken", tokens.refresh, { httpOnly: true, maxAge: 60 * 60 * 24, path: "/" });
+  try {
+    const tokens = await tokenApi.tokenCreate({ tokenObtainPair: creds });
+    setTokens(cookies, tokens);
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ message: "Invalid username/password" }),
+      { status: 400 }
+    );
+  }
 
   return redirect("/");
 };

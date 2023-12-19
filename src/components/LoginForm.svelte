@@ -3,43 +3,37 @@
 
   async function submitForm(e: SubmitEvent) {
     const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const response = await fetch("/api/auth/login", {
+    const res = await fetch("/api/auth/login", {
       method: "POST",
       body: formData,
     });
-    let data;
-    try {
-      data = await response.json();
-    } catch (error) {
-      window.location.href = response.url;
+
+    if (res.redirected == true) {
+      window.location.href = res.url;
     }
+
+    const data = await res.json();
     responseMessage = data.message;
   }
 </script>
 
 <form on:submit|preventDefault={submitForm}>
-  <label class="block">
-    <span class="text-gray-700">Username</span>
-    <input
-      type="text"
-      id="username"
-      name="username"
-      class="mt-1 block w-full"
-      placeholder="my-fun-username"
-      required />
-  </label>
-  <label class="block">
-    <span class="text-gray-700">Password</span>
-    <input
-      type="password"
-      id="password"
-      name="password"
-      class="mt-1 block w-full"
-      placeholder="*******"
-      required />
-  </label>
+  <input
+    type="text"
+    id="username"
+    name="username"
+    class="mt-1 block w-full"
+    placeholder="Username"
+    required />
+  <input
+    type="password"
+    id="password"
+    name="password"
+    class="mt-1 block w-full"
+    placeholder="Password"
+    required />
   <input type="submit" value="Send" class="btn btn-primary btn-block" />
   {#if responseMessage}
-    <p>{responseMessage}</p>
+    <p class="text-error">{responseMessage}</p>
   {/if}
 </form>

@@ -2,14 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 
 import { GET as getCurrentTimer } from "./api/timer/current";
-import { GET as refreshToken } from "../pages/api/auth/refresh";
 import { GET as getTimers } from "./api/timer/list";
 import { GET as getProjects } from "./api/project/list";
 import TimersPanel from "../components/TimersPanel.svelte";
-
-if (Astro.cookies.get("accessToken") === undefined) {
-  return refreshToken(Astro);
-}
 
 let response = await getCurrentTimer(Astro);
 let data = await response.json();

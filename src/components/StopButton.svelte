@@ -7,7 +7,11 @@
 
   async function newTimer() {
     clearInterval(interval);
-    await fetch("/api/timer/current", { method: "post" });
+    const res = await fetch("/api/timer/current", { method: "post" });
+
+    if (res.redirected == true) {
+      window.location.href = res.url;
+    }
     dispatch("new");
   }
 </script>

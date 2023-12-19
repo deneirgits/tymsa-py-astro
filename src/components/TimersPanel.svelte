@@ -9,14 +9,24 @@
   let modal: SvelteComponent;
 
   async function getCurrentTimer() {
-    let response = await fetch("/api/timer/current");
-    const data = await response.json();
+    let res = await fetch("/api/timer/current");
+
+    if (res.redirected == true) {
+      window.location.href = res.url;
+    }
+
+    const data = await res.json();
     timer = data.timer;
   }
 
   async function getTimers() {
-    let response = await fetch("/api/timer/list");
-    const data = await response.json();
+    let res = await fetch("/api/timer/list");
+
+    if (res.redirected == true) {
+      window.location.href = res.url;
+    }
+
+    const data = await res.json();
     timers = data.timers;
   }
 </script>
