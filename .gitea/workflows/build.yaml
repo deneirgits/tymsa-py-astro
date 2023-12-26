@@ -2,8 +2,7 @@ name: Build images
 
 on:
   pull_request:
-    types:
-      - opened
+    types: [opened, edited, synchronize, reopened]
     branch:
       - "main"
 
