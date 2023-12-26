@@ -3,8 +3,8 @@ name: Build images
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
-    branch:
-      - "main"
+    branches:
+      - 'main'
 
 jobs:
   build:
