@@ -1,0 +1,14 @@
+# Client files
+node_modules/
+dist/
+dev-dist/
+public
+src/
+astro.config.mjs
+openapitools.json
+package.json
+pnpm-lock.yaml
+pwa-assets.config.ts
+svelte.config.js
+tailwind.config.mjs
+tsconfig.json

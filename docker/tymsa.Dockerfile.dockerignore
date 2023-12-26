@@ -1,0 +1,9 @@
+node_modules/
+dist/
+dev-dist/
+
+# API files
+tymsa/
+manage.py
+requirements.txt
+schema.yml

@@ -1,0 +1,562 @@
+openapi: 3.0.3
+info:
+  title: Tymsa API
+  version: 1.0.0
+  description: API for Tymsa time-tracking
+paths:
+  /api/v1/projects/:
+    get:
+      operationId: projects_list
+      tags:
+      - projects
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+          description: ''
+    post:
+      operationId: projects_create
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/:
+    get:
+      operationId: projects_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - projects
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    put:
+      operationId: projects_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    patch:
+      operationId: projects_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    delete:
+      operationId: projects_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - projects
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/timers/:
+    get:
+      operationId: timers_list
+      tags:
+      - timers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Timer'
+          description: ''
+  /api/v1/timers/{id}/:
+    get:
+      operationId: timers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this timer.
+        required: true
+      tags:
+      - timers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timer'
+          description: ''
+  /api/v1/timers/{id}/edit/:
+    patch:
+      operationId: timers_edit
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        description: A unique integer value identifying this timer or the literal
+          string "current" to indicate the currently running timer.
+        required: true
+      tags:
+      - timers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTimerUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTimerUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTimerUpdate'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimerUpdate'
+          description: ''
+  /api/v1/timers/current/:
+    get:
+      operationId: timers_current_retrieve
+      tags:
+      - timers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timer'
+          description: ''
+  /api/v1/timers/new/:
+    post:
+      operationId: timers_current_new
+      tags:
+      - timers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimerNew'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TimerNew'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TimerNew'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimerNew'
+          description: ''
+  /api/v1/token/:
+    post:
+      operationId: token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/v1/token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/token/verify/:
+    post:
+      operationId: token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerify'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenVerify'
+          description: ''
+components:
+  schemas:
+    PatchedProject:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        color:
+          type: string
+          maxLength: 6
+    PatchedTimerUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        start_datetime:
+          type: string
+          format: date-time
+          readOnly: true
+        end_datetime:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        note:
+          type: string
+          maxLength: 255
+        duration:
+          type: string
+          readOnly: true
+          nullable: true
+        project:
+          type: integer
+          nullable: true
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        color:
+          type: string
+          maxLength: 6
+      required:
+      - color
+      - id
+      - name
+      - url
+    Timer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        timesince:
+          type: integer
+          readOnly: true
+        project:
+          $ref: '#/components/schemas/Project'
+        start_datetime:
+          type: string
+          format: date-time
+          readOnly: true
+        end_datetime:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        note:
+          type: string
+          maxLength: 255
+        duration:
+          type: string
+          readOnly: true
+          nullable: true
+      required:
+      - duration
+      - end_datetime
+      - id
+      - project
+      - start_datetime
+      - timesince
+      - url
+    TimerNew:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        start_datetime:
+          type: string
+          format: date-time
+          readOnly: true
+        end_datetime:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        note:
+          type: string
+          readOnly: true
+        duration:
+          type: string
+          readOnly: true
+          nullable: true
+        project:
+          type: integer
+          readOnly: true
+          nullable: true
+      required:
+      - duration
+      - end_datetime
+      - id
+      - note
+      - project
+      - start_datetime
+    TimerUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        start_datetime:
+          type: string
+          format: date-time
+          readOnly: true
+        end_datetime:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        note:
+          type: string
+          maxLength: 255
+        duration:
+          type: string
+          readOnly: true
+          nullable: true
+        project:
+          type: integer
+          nullable: true
+      required:
+      - duration
+      - end_datetime
+      - id
+      - start_datetime
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+      - token
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

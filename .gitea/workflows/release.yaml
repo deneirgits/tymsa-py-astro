@@ -2,7 +2,7 @@ name: Deploy on release
 
 on:
   push:
-    tag:
+    tags:
       - 'v*.*.*'
 
 jobs:
