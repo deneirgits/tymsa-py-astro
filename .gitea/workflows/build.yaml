@@ -1,0 +1,28 @@
+name: Build images
+
+on:
+  pull_request:
+    types:
+      - opened
+    branch:
+      - "main"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        image: [tymsa-api, tymsa]
+    runs_on: ubuntu-latest
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Docker Auth
+        run: docker login ${{ secrets.REGISTRY_HOST }} --username=${{ secrets.REGISTRY_USERNAME }} --password=${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build and push to registry
+        run: |
+          docker buildx build -t ${{ secrets.REGISTRY_HOST_USERNAME }}/${{ matrix.image }}:latest --file $GITHUB_WORKSPACE/docker/${{ matrix.image }}.Dockerfile .
+          docker push ${{ secrets.REGISTRY_HOST_USERNAME }}/${{ matrix.image }}:latest
