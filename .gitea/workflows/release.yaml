@@ -27,6 +27,9 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           envs: ENV_FILE
           script: |
+            docker login ${{ secrets.REGISTRY_HOST }} --username=${{ secrets.REGISTRY_USERNAME }} --password=${{ secrets.REGISTRY_PASSWORD }}
+
+            echo "${{ steps.compose.outputs.content }}" > docker-compose.tymsa.yml
             docker compose down
 
             docker pull ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:latest
@@ -39,5 +42,5 @@ jobs:
             docker push ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:${{ gitea.ref_name }}
 
             echo "${{ secrets.ENV_FILE }}" > .env.tymsa
-            echo "${{ steps.compose.outputs.content }}" > docker-compose.tymsa.yml
+            echo "${{ secrets.REGISTRY_HOST_USERNAME }}" >> .env.tymsa
             docker compose --file docker-compose.tymsa.yml --env-file .env.tymsa up -d
