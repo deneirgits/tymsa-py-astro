@@ -42,5 +42,5 @@ jobs:
             docker push ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:${{ gitea.ref_name }}
 
             echo "${{ secrets.ENV_FILE }}" > .env.tymsa
-            echo "${{ secrets.REGISTRY_HOST_USERNAME }}" >> .env.tymsa
+            echo "REGISTRY_HOST_USERNAME=${{ secrets.REGISTRY_HOST_USERNAME }}" >> .env.tymsa
             docker compose --file docker-compose.tymsa.yml --env-file .env.tymsa up -d
