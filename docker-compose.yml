@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   api:
@@ -6,7 +6,7 @@ services:
     command: gunicorn tymsa.wsgi:application --bind 0.0.0.0:8001
     restart: unless-stopped
     ports:
-      - 8001:8001
+      - "8001:8001"
     environment:
       - DJANGO_DEBUG
       - DJANGO_SECRET_KEY
@@ -23,7 +23,7 @@ services:
     command: node ./dist/server/entry.mjs
     restart: unless-stopped
     ports:
-      - 4321:4321
+      - "4321:4321"
     environment:
       - BASE_PATH
     depends_on:
