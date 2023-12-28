@@ -1,0 +1,67 @@
+name: Deploy on release
+
+on:
+  push:
+    branches:
+      - 'test/**'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        image: [tymsa-api, tymsa]
+    runs_on: ubuntu-latest
+    container:
+      image: catthehacker/ubuntu:act-latest
+    steps:
+      - name: Docker Auth
+        run: docker login ${{ secrets.REGISTRY_HOST }} --username=${{ secrets.REGISTRY_USERNAME }} --password=${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build and push to registry
+        run: |
+          echo '${{ secrets.ENV_FILE_TEST }}' > .env
+          docker buildx build -t ${{ secrets.REGISTRY_HOST_USERNAME }}/${{ matrix.image }}:test --file $GITHUB_WORKSPACE/docker/${{ matrix.image }}.Dockerfile .
+          docker push ${{ secrets.REGISTRY_HOST_USERNAME }}/${{ matrix.image }}:test
+
+  deploy:
+    runs_on: ubuntu-latest
+    container:
+      image: catthehacker/ubuntu:act-latest
+    needs: build
+    steps:
+      - name: Get docker-compose test content
+        id: compose
+        uses: jaywcjlove/github-action-read-file@main
+        with:
+          path: docker-compose.test.yml
+
+      - name: Deploy to Docker via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE_TEST }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          envs: ENV_FILE
+          script: |
+            mkdir -p ./tymsa-test
+            cd ./tymsa-test
+
+            echo '${{ secrets.ENV_FILE_TEST }}' > .env
+            echo '${{ steps.compose.outputs.content }}' > docker-compose.yml
+
+            docker login ${{ secrets.REGISTRY_HOST }} --username=${{ secrets.REGISTRY_USERNAME }} --password=${{ secrets.REGISTRY_PASSWORD }}
+
+            docker compose down
+
+            docker pull ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:test
+            docker pull ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:test
+
+            docker compose up -d
+            docker compose run api python manage.py migrate
+
+            docker system prune -f
