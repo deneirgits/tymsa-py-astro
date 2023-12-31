@@ -3,7 +3,7 @@
   import { formatTime } from "../utils/formatTime";
   import type { Timer } from "../client";
 
-  export let interval: number, timer: Timer;
+  export let interval: NodeJS.Timeout, timer: Timer;
   let display: string, seconds: number;
 
   onMount(async () => {
@@ -24,4 +24,6 @@
   $: display = formatTime(seconds);
 </script>
 
-<h1>{display}</h1>
+<strong
+  class="text-left font-bold text-[2rem] align-middle leading-10 min-w-36 max-w-36 md:min-w-56 md:text-5xl"
+  >{display}</strong>

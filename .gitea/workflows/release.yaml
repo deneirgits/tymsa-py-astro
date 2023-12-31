@@ -37,14 +37,20 @@ jobs:
 
             docker compose down
 
-            docker pull ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:latest
-            docker pull ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:latest
+            docker pull ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:candidate
+            docker pull ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:candidate
 
-            docker tag ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:latest ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:${{ gitea.ref_name }}
-            docker tag ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:latest ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:${{ gitea.ref_name }}
+            docker tag ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:candidate ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:${{ gitea.ref_name }}
+            docker tag ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:candidate ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:${{ gitea.ref_name }}
+
+            docker tag ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:candidate ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:latest
+            docker tag ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:candidate ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:latest
 
             docker push ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:${{ gitea.ref_name }}
             docker push ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:${{ gitea.ref_name }}
+
+            docker push ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa:latest
+            docker push ${{ secrets.REGISTRY_HOST_USERNAME }}/tymsa-api:latest
 
             docker compose up -d
 

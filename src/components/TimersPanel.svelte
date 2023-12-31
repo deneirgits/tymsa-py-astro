@@ -1,12 +1,10 @@
 <script lang="ts">
-  import type { SvelteComponent } from "svelte";
   import type { Project, Timer } from "../client";
   import CurrentTimer from "./CurrentTimer.svelte";
   import TimersList from "./TimersList.svelte";
-  import TimerUpdateModal from "./TimerUpdateModal.svelte";
 
   export let timer: Timer, timers: Array<Timer>, projects: Array<Project>;
-  let modal: SvelteComponent;
+  let checkbox: HTMLInputElement;
 
   async function getCurrentTimer() {
     let res = await fetch("/api/timer/current");
@@ -31,23 +29,26 @@
   }
 </script>
 
-<div>
-  <CurrentTimer
-    on:new={async () => {
-      await getCurrentTimer();
-      await getTimers();
+<div
+  class="collapse bg-base-200 absolute inset-x-0 bottom-0 rounded-3xl rounded-b-none w-full max-h-dvh">
+  <input bind:this={checkbox} type="checkbox" />
+  <button
+    on:click={() => {
+      checkbox.checked = !checkbox.checked;
     }}
-    on:openModal={async (event) => await modal.openModal(event)}
-    {timer} />
-  <TimersList
-    on:openModal={async (event) => await modal.openModal(event)}
-    {timers} />
-
-  <TimerUpdateModal
-    bind:this={modal}
-    {projects}
-    on:timerEdit={async () => {
-      await getCurrentTimer();
-      await getTimers();
-    }} />
+    class="collapse-title text-xl font-medium pt-0 px-4 w-full">
+    <div class="badge bg-neutral-400 w-14 h-2 my-3"></div>
+    <CurrentTimer
+      on:new={async () => {
+        await getCurrentTimer();
+        await getTimers();
+      }}
+      on:edit={getCurrentTimer}
+      {timer}
+      {projects} />
+  </button>
+  <div class="collapse-content overflow-auto">
+    <div class="divider mt-0"></div>
+    <TimersList on:timerEdit={getTimers} {timers} {projects} />
+  </div>
 </div>

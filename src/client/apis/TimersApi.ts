@@ -40,6 +40,10 @@ export interface TimersEditRequest {
     patchedTimerUpdate?: PatchedTimerUpdate;
 }
 
+export interface TimersListRequest {
+    endDatetimeDate?: Date;
+}
+
 export interface TimersRetrieveRequest {
     id: number;
 }
@@ -157,8 +161,12 @@ export class TimersApi extends runtime.BaseAPI {
 
     /**
      */
-    async timersListRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Timer>>> {
+    async timersListRaw(requestParameters: TimersListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Timer>>> {
         const queryParameters: any = {};
+
+        if (requestParameters.endDatetimeDate !== undefined) {
+            queryParameters['end_datetime__date'] = (requestParameters.endDatetimeDate as any).toISOString().substring(0,10);
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -182,8 +190,8 @@ export class TimersApi extends runtime.BaseAPI {
 
     /**
      */
-    async timersList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Timer>> {
-        const response = await this.timersListRaw(initOverrides);
+    async timersList(requestParameters: TimersListRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Timer>> {
+        const response = await this.timersListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

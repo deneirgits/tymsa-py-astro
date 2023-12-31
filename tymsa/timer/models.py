@@ -14,7 +14,7 @@ class Timer(models.Model):
     )
     start_datetime = models.DateTimeField(auto_now_add=True)
     end_datetime = models.DateTimeField(blank=True, null=True, editable=False)
-    note = models.CharField(max_length=255, blank=True)
+    note = models.CharField(max_length=30, blank=True)
     duration = models.DurationField(blank=True, null=True, editable=False)
 
     @property

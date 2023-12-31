@@ -3,9 +3,10 @@ from http import HTTPMethod
 from django.utils import timezone
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from tymsa.timer.filters import TimerFilter
 
 from tymsa.timer.models import Timer
 from tymsa.timer.serializers import (
@@ -18,6 +19,7 @@ from tymsa.timer.serializers import (
 class TimerViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = "id"
     serializer_class = TimerSerializer
+    filterset_class = TimerFilter
 
     def get_queryset(self):
         return (

@@ -154,6 +154,12 @@ paths:
   /api/v1/timers/:
     get:
       operationId: timers_list
+      parameters:
+      - in: query
+        name: end_datetime__date
+        schema:
+          type: string
+          format: date
       tags:
       - timers
       security:
@@ -381,7 +387,7 @@ components:
           nullable: true
         note:
           type: string
-          maxLength: 255
+          maxLength: 30
         duration:
           type: string
           readOnly: true
@@ -436,7 +442,7 @@ components:
           nullable: true
         note:
           type: string
-          maxLength: 255
+          maxLength: 30
         duration:
           type: string
           readOnly: true
@@ -499,7 +505,7 @@ components:
           nullable: true
         note:
           type: string
-          maxLength: 255
+          maxLength: 30
         duration:
           type: string
           readOnly: true
