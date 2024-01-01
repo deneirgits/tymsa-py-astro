@@ -25,5 +25,5 @@
 </script>
 
 <strong
-  class="text-left font-bold text-[2rem] align-middle leading-10 min-w-36 max-w-36 md:min-w-56 md:text-5xl"
+  class="text-left font-bold text-[1.5rem] leading-[3rem] min-w-28 md:min-w-36 md:text-3xl md:leading-[3rem]"
   >{display}</strong>

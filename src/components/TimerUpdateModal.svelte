@@ -78,7 +78,12 @@
       </label>
       <label class="block">
         <span>Note</span>
-        <input value={note} type="text" name="note" autocomplete="off" />
+        <input
+          value={note}
+          type="text"
+          name="note"
+          autocomplete="off"
+          maxlength="30" />
       </label>
       <div class="modal-action">
         <button class="btn btn-primary" type="submit">Save</button>

@@ -27,17 +27,27 @@
     const data = await res.json();
     timers = data.timers;
   }
+  async function toggleCollapse() {
+    if (!checkbox.checked) {
+      history.pushState({}, "", null);
+    }
+    checkbox.checked = !checkbox.checked;
+  }
+  async function handleKeydown(e: KeyboardEvent) {
+    if (e.key == "Escape" && checkbox.checked) {
+      checkbox.checked = false;
+    }
+  }
 </script>
 
+<svelte:window on:keydown={handleKeydown} on:popstate={toggleCollapse} />
 <div
   class="collapse bg-base-200 absolute inset-x-0 bottom-0 rounded-3xl rounded-b-none w-full max-h-dvh">
   <input bind:this={checkbox} type="checkbox" />
   <button
-    on:click={() => {
-      checkbox.checked = !checkbox.checked;
-    }}
-    class="collapse-title text-xl font-medium pt-0 px-4 w-full">
-    <div class="badge bg-neutral-400 w-14 h-2 my-3"></div>
+    on:click={toggleCollapse}
+    class="collapse-title text-xl font-medium pt-0 px-4 py-0 w-full">
+    <div class="badge bg-neutral-400 w-14 h-2 mt-3"></div>
     <CurrentTimer
       on:new={async () => {
         await getCurrentTimer();
@@ -48,7 +58,7 @@
       {projects} />
   </button>
   <div class="collapse-content overflow-auto">
-    <div class="divider mt-0"></div>
+    <div class="divider my-0"></div>
     <TimersList on:timerEdit={getTimers} {timers} {projects} />
   </div>
 </div>
