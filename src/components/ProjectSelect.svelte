@@ -21,9 +21,9 @@
     on:click|stopPropagation
     name="project"
     value={id}
-    class="select select-ghost bg-none p-0 text-md md:text-lg font-semibold focus:bg-transparent focus:border-none focus:outline-none"
+    class="select select-ghost bg-none p-0 text-md absolute px-3 ml-2 md:text-lg font-semibold focus:bg-transparent focus:border-none focus:outline-none"
     style="color: #{color};">
-    <option value="0" style="color: #000000;"> ——</option>
+    <option value="0" style="color: #000000;">—</option>
     {#each projects as project}
       <option
         value={project.id}

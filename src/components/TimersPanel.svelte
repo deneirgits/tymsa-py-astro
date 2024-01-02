@@ -30,24 +30,33 @@
   async function toggleCollapse() {
     if (!checkbox.checked) {
       history.pushState({}, "", null);
+    } else {
+      history.back();
     }
+
     checkbox.checked = !checkbox.checked;
+  }
+  async function handlePopState() {
+    if (checkbox.checked) {
+      checkbox.checked = false;
+    }
   }
   async function handleKeydown(e: KeyboardEvent) {
     if (e.key == "Escape" && checkbox.checked) {
       checkbox.checked = false;
+      history.back();
     }
   }
 </script>
 
-<svelte:window on:keydown={handleKeydown} on:popstate={toggleCollapse} />
+<svelte:window on:keydown={handleKeydown} on:popstate={handlePopState} />
 <div
   class="collapse bg-base-200 absolute inset-x-0 bottom-0 rounded-3xl rounded-b-none w-full max-h-dvh">
   <input bind:this={checkbox} type="checkbox" />
   <button
     on:click={toggleCollapse}
     class="collapse-title text-xl font-medium pt-0 px-4 py-0 w-full">
-    <div class="badge bg-neutral-400 w-14 h-2 mt-3"></div>
+    <div class="badge bg-neutral-400 w-14 h-1.5 mt-3"></div>
     <CurrentTimer
       on:new={async () => {
         await getCurrentTimer();
