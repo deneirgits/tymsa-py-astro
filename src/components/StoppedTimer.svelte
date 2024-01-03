@@ -61,5 +61,4 @@
       </p>
     </div>
   </div>
-  <div class="divider m-0"></div>
 </button>

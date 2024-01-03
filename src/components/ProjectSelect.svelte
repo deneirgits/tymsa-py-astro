@@ -7,6 +7,14 @@
 
   $: id = project ? project.id : "0";
   $: color = project ? project.color : "a3a3a3";
+
+  async function handleSelectChange(e: Event) {
+    const target = e.target as HTMLSelectElement,
+      index = target.selectedIndex;
+
+    color = target.options[index].dataset.color!;
+    dispatch("projectChange");
+  }
 </script>
 
 <div class="flex gap-1 md:gap-2">
@@ -15,9 +23,7 @@
     style="background-color: #{color};">
   </div>
   <select
-    on:change={async () => {
-      dispatch("projectChange");
-    }}
+    on:change={handleSelectChange}
     on:click|stopPropagation
     name="project"
     value={id}

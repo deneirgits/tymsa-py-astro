@@ -1,10 +1,15 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import type { Project, Timer } from "../client";
   import CurrentTimer from "./CurrentTimer.svelte";
   import TimersList from "./TimersList.svelte";
 
-  export let timer: Timer, timers: Array<Timer>, projects: Array<Project>;
-  let checkbox: HTMLInputElement;
+  export let timer: Timer, projects: Array<Project>;
+  let checkbox: HTMLInputElement, timers: Array<Timer>;
+
+  onMount(async () => {
+    await getTimers();
+  });
 
   async function getCurrentTimer() {
     let res = await fetch("/api/timer/current");
@@ -18,7 +23,7 @@
   }
 
   async function getTimers() {
-    let res = await fetch("/api/timer/list");
+    let res = await fetch(`/api/timer/list?end_date=${new Date()}`);
 
     if (res.redirected == true) {
       window.location.href = res.url;
@@ -67,7 +72,8 @@
       {projects} />
   </button>
   <div class="collapse-content overflow-auto">
-    <div class="divider my-0"></div>
-    <TimersList on:timerEdit={getTimers} {timers} {projects} />
+    {#if timers}
+      <TimersList on:timerEdit={getTimers} {timers} {projects} />
+    {/if}
   </div>
 </div>

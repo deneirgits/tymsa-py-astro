@@ -2,17 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 
 import { GET as getCurrentTimer } from "./api/timer/current";
-import { GET as getTimers } from "./api/timer/list";
 import { GET as getProjects } from "./api/project/list";
 import TimersPanel from "../components/TimersPanel.svelte";
 
 let response = await getCurrentTimer(Astro);
 let data = await response.json();
 const timer = data.timer;
-
-response = await getTimers(Astro);
-data = await response.json();
-const timers = data.timers;
 
 response = await getProjects(Astro);
 data = await response.json();
@@ -21,6 +16,6 @@ const projects = data.projects;
 
 <Layout title="Home">
   <main class="h-dvh w-screen relative">
-    <TimersPanel client:load {timer} {timers} {projects} />
+    <TimersPanel client:load {timer} {projects} />
   </main>
 </Layout>

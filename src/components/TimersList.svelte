@@ -9,6 +9,7 @@
 </script>
 
 {#each timers as timer}
+  <div class="divider my-0"></div>
   <StoppedTimer
     on:openModal={async (event) => await modal.openModal(event)}
     {timer} />
