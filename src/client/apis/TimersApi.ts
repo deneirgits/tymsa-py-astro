@@ -41,7 +41,7 @@ export interface TimersEditRequest {
 }
 
 export interface TimersListRequest {
-    endDatetimeDate?: Date;
+    endDatetimeGte?: Date;
 }
 
 export interface TimersRetrieveRequest {
@@ -164,8 +164,8 @@ export class TimersApi extends runtime.BaseAPI {
     async timersListRaw(requestParameters: TimersListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Timer>>> {
         const queryParameters: any = {};
 
-        if (requestParameters.endDatetimeDate !== undefined) {
-            queryParameters['end_datetime__date'] = (requestParameters.endDatetimeDate as any).toISOString().substring(0,10);
+        if (requestParameters.endDatetimeGte !== undefined) {
+            queryParameters['end_datetime__gte'] = (requestParameters.endDatetimeGte as any).toISOString();
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

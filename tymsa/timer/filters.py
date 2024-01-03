@@ -7,5 +7,5 @@ class TimerFilter(filters.FilterSet):
     class Meta:
         model = Timer
         fields = {
-            "end_datetime": ["date__exact"],
+            "end_datetime": ["gte"],
         }

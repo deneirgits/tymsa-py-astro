@@ -156,10 +156,10 @@ paths:
       operationId: timers_list
       parameters:
       - in: query
-        name: end_datetime__date
+        name: end_datetime__gte
         schema:
           type: string
-          format: date
+          format: date-time
       tags:
       - timers
       security:

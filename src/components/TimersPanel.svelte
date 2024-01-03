@@ -23,7 +23,8 @@
   }
 
   async function getTimers() {
-    let res = await fetch(`/api/timer/list?end_date=${new Date()}`);
+    const date = new Date(new Date().setHours(0, 0, 0, 0)).toISOString();
+    let res = await fetch(`/api/timer/list?end_datetime__gte=${date}`);
 
     if (res.redirected == true) {
       window.location.href = res.url;
