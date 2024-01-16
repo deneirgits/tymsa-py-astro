@@ -30,13 +30,13 @@ export interface TimerNew {
      * @type {Date}
      * @memberof TimerNew
      */
-    readonly startDatetime: Date;
+    startDatetime?: Date;
     /**
      * 
      * @type {Date}
      * @memberof TimerNew
      */
-    readonly endDatetime: Date | null;
+    endDatetime?: Date | null;
     /**
      * 
      * @type {string}
@@ -55,6 +55,12 @@ export interface TimerNew {
      * @memberof TimerNew
      */
     readonly project: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof TimerNew
+     */
+    previous?: number | null;
 }
 
 /**
@@ -63,8 +69,6 @@ export interface TimerNew {
 export function instanceOfTimerNew(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "startDatetime" in value;
-    isInstance = isInstance && "endDatetime" in value;
     isInstance = isInstance && "note" in value;
     isInstance = isInstance && "duration" in value;
     isInstance = isInstance && "project" in value;
@@ -83,11 +87,12 @@ export function TimerNewFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     return {
         
         'id': json['id'],
-        'startDatetime': (new Date(json['start_datetime'])),
-        'endDatetime': (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
+        'startDatetime': !exists(json, 'start_datetime') ? undefined : (new Date(json['start_datetime'])),
+        'endDatetime': !exists(json, 'end_datetime') ? undefined : (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
         'note': json['note'],
         'duration': json['duration'],
         'project': json['project'],
+        'previous': !exists(json, 'previous') ? undefined : json['previous'],
     };
 }
 
@@ -100,6 +105,9 @@ export function TimerNewToJSON(value?: TimerNew | null): any {
     }
     return {
         
+        'start_datetime': value.startDatetime === undefined ? undefined : (value.startDatetime.toISOString()),
+        'end_datetime': value.endDatetime === undefined ? undefined : (value.endDatetime === null ? null : value.endDatetime.toISOString()),
+        'previous': value.previous,
     };
 }
 

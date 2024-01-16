@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PreviousTimer } from './PreviousTimer';
+import {
+    PreviousTimerFromJSON,
+    PreviousTimerFromJSONTyped,
+    PreviousTimerToJSON,
+} from './PreviousTimer';
 import type { Project } from './Project';
 import {
     ProjectFromJSON,
@@ -52,16 +58,22 @@ export interface Timer {
     project: Project;
     /**
      * 
-     * @type {Date}
+     * @type {PreviousTimer}
      * @memberof Timer
      */
-    readonly startDatetime: Date;
+    previous: PreviousTimer;
     /**
      * 
      * @type {Date}
      * @memberof Timer
      */
-    readonly endDatetime: Date | null;
+    startDatetime?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof Timer
+     */
+    endDatetime?: Date | null;
     /**
      * 
      * @type {string}
@@ -85,8 +97,7 @@ export function instanceOfTimer(value: object): boolean {
     isInstance = isInstance && "url" in value;
     isInstance = isInstance && "timesince" in value;
     isInstance = isInstance && "project" in value;
-    isInstance = isInstance && "startDatetime" in value;
-    isInstance = isInstance && "endDatetime" in value;
+    isInstance = isInstance && "previous" in value;
     isInstance = isInstance && "duration" in value;
 
     return isInstance;
@@ -106,8 +117,9 @@ export function TimerFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tim
         'url': json['url'],
         'timesince': json['timesince'],
         'project': ProjectFromJSON(json['project']),
-        'startDatetime': (new Date(json['start_datetime'])),
-        'endDatetime': (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
+        'previous': PreviousTimerFromJSON(json['previous']),
+        'startDatetime': !exists(json, 'start_datetime') ? undefined : (new Date(json['start_datetime'])),
+        'endDatetime': !exists(json, 'end_datetime') ? undefined : (json['end_datetime'] === null ? null : new Date(json['end_datetime'])),
         'note': !exists(json, 'note') ? undefined : json['note'],
         'duration': json['duration'],
     };
@@ -123,6 +135,9 @@ export function TimerToJSON(value?: Timer | null): any {
     return {
         
         'project': ProjectToJSON(value.project),
+        'previous': PreviousTimerToJSON(value.previous),
+        'start_datetime': value.startDatetime === undefined ? undefined : (value.startDatetime.toISOString()),
+        'end_datetime': value.endDatetime === undefined ? undefined : (value.endDatetime === null ? null : value.endDatetime.toISOString()),
         'note': value.note,
     };
 }

@@ -30,13 +30,13 @@ export interface PatchedTimerUpdate {
      * @type {Date}
      * @memberof PatchedTimerUpdate
      */
-    readonly startDatetime?: Date;
+    startDatetime?: Date;
     /**
      * 
      * @type {Date}
      * @memberof PatchedTimerUpdate
      */
-    readonly endDatetime?: Date | null;
+    endDatetime?: Date | null;
     /**
      * 
      * @type {string}
@@ -55,6 +55,12 @@ export interface PatchedTimerUpdate {
      * @memberof PatchedTimerUpdate
      */
     project?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PatchedTimerUpdate
+     */
+    previous?: number | null;
 }
 
 /**
@@ -82,6 +88,7 @@ export function PatchedTimerUpdateFromJSONTyped(json: any, ignoreDiscriminator: 
         'note': !exists(json, 'note') ? undefined : json['note'],
         'duration': !exists(json, 'duration') ? undefined : json['duration'],
         'project': !exists(json, 'project') ? undefined : json['project'],
+        'previous': !exists(json, 'previous') ? undefined : json['previous'],
     };
 }
 
@@ -94,8 +101,11 @@ export function PatchedTimerUpdateToJSON(value?: PatchedTimerUpdate | null): any
     }
     return {
         
+        'start_datetime': value.startDatetime === undefined ? undefined : (value.startDatetime.toISOString()),
+        'end_datetime': value.endDatetime === undefined ? undefined : (value.endDatetime === null ? null : value.endDatetime.toISOString()),
         'note': value.note,
         'project': value.project,
+        'previous': value.previous,
     };
 }
 

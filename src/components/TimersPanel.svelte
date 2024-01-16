@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { SvelteComponent, onMount } from "svelte";
   import type { Project, Timer } from "../client";
   import CurrentTimer from "./CurrentTimer.svelte";
   import TimersList from "./TimersList.svelte";
 
   export let timer: Timer, projects: Array<Project>;
-  let checkbox: HTMLInputElement, timers: Array<Timer>;
+  let checkbox: HTMLInputElement, timers: Array<Timer>, isModalOpened: boolean;
 
   onMount(async () => {
     await getTimers();
@@ -48,7 +48,7 @@
     }
   }
   async function handleKeydown(e: KeyboardEvent) {
-    if (e.key == "Escape" && checkbox.checked) {
+    if (e.key == "Escape" && !isModalOpened && checkbox.checked) {
       checkbox.checked = false;
       history.back();
     }
@@ -74,7 +74,13 @@
   </button>
   <div class="collapse-content overflow-auto">
     {#if timers}
-      <TimersList on:timerEdit={getTimers} {timers} {projects} />
+      <TimersList
+        on:modalOpened={() => (isModalOpened = true)}
+        on:modalClosed={() => (isModalOpened = false)}
+        on:timerEdit={getTimers}
+        currentTimer={timer}
+        {timers}
+        {projects} />
     {/if}
   </div>
 </div>

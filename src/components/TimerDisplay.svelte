@@ -12,7 +12,7 @@
 
   async function resetInterval(timer: Timer) {
     clearInterval(interval);
-    if (timer.endDatetime === null) {
+    if (timer.endDatetime === undefined) {
       interval = setInterval(() => {
         seconds++;
       }, 1000);

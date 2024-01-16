@@ -5,6 +5,7 @@ apis/index.ts
 index.ts
 models/PatchedProject.ts
 models/PatchedTimerUpdate.ts
+models/PreviousTimer.ts
 models/Project.ts
 models/Timer.ts
 models/TimerNew.ts

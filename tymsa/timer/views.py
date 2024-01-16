@@ -35,8 +35,9 @@ class TimerViewSet(viewsets.ReadOnlyModelViewSet):
         serializer_class=TimerNewSerializer,
     )
     def new(self, _):
+        timer = None
         try:
-            timer: Timer | None = Timer.objects.latest()
+            timer = Timer.objects.latest()
             now = timezone.now()
             timer.end_datetime = now
             timer.duration = timer.end_datetime - timer.start_datetime
@@ -45,7 +46,7 @@ class TimerViewSet(viewsets.ReadOnlyModelViewSet):
             # no timer has been initialized ever, so we create a new one
             pass
 
-        new_timer = Timer.objects.create()
+        new_timer = Timer.objects.create(previous=timer)
 
         serializer = self.get_serializer(new_timer)
         return Response(serializer.data)
@@ -85,17 +86,27 @@ class TimerViewSet(viewsets.ReadOnlyModelViewSet):
     )
     def edit(self, request, *args, **kwargs):
         if (id := kwargs.get("id")) and id == "current":
-            instance = Timer.objects.latest()
+            timer = Timer.objects.select_related("previous").latest()
         else:
-            instance = Timer.objects.get(pk=id)
+            timer = Timer.objects.select_related("previous").get(pk=id)
 
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer = self.get_serializer(timer, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
+
+        if "start_datetime" in request.data:
+            prev_serializer = self.get_serializer(
+                timer.previous,
+                data={"end_datetime": request.data["start_datetime"]},
+                partial=True,
+            )
+            prev_serializer.is_valid(raise_exception=True)
+            prev_serializer.save()
+
         serializer.save()
 
-        if getattr(instance, "_prefetched_objects_cache", None):
+        if getattr(timer, "_prefetched_objects_cache", None):
             # If 'prefetch_related' has been applied to a queryset, we need to
             # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}  # type: ignore
+            timer._prefetched_objects_cache = {}  # type: ignore
 
         return Response(serializer.data)

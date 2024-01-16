@@ -24,6 +24,7 @@
     selectedTimer = undefined;
     modal.classList.remove("modal-open");
     projectSelect.focus();
+    dispatch("modalClosed");
   }
 
   async function submitForm(e: SubmitEvent) {
@@ -41,7 +42,7 @@
     dispatch("timerEdit");
   }
   async function handleKeydown(e: KeyboardEvent) {
-    if (e.key == "Escape") {
+    if (e.key == "Escape" && modal.classList.contains("modal-open")) {
       await closeModal();
     }
   }

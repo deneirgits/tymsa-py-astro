@@ -63,12 +63,7 @@
     </div>
 
     <div class="self-center w-full text-right">
-      <StopButton
-        on:new={async () => {
-          await submitForm();
-          dispatch("new");
-        }}
-        {interval} />
+      <StopButton on:new {interval} />
     </div>
   {/if}
 </div>

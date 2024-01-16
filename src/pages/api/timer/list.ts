@@ -6,7 +6,6 @@ export const GET: APIRoute = async ({ request, cookies }: APIContext) => {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
   const endDate = params.get("end_datetime__gte");
-  console.log(endDate, new Date(endDate!), new Date());
 
   const timersApi = new TimersApi(getConfig(cookies));
 

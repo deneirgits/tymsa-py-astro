@@ -34,7 +34,7 @@
     placeholder="Password"
     autocomplete="current-password"
     required />
-  <input type="submit" value="Send" class="btn btn-primary btn-block" />
+  <input type="submit" value="Login" class="btn btn-primary btn-block" />
   {#if responseMessage}
     <p class="text-error">{responseMessage}</p>
   {/if}
