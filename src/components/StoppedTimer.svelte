@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import type { Timer } from "../client";
-  import { formatTime } from "../utils/formatTime";
+  import { timerDisplay } from "../utils/time";
 
   export let timer: Timer;
   const dispatch = createEventDispatcher();
@@ -14,7 +14,7 @@
   class="flex flex-col cursor-pointer w-full text-left py-1">
   <div class="flex w-full">
     <strong class="text-sm md:text-lg">
-      {formatTime(timer.timesince)}
+      {timerDisplay(timer.timesince)}
     </strong>
 
     {#if project}

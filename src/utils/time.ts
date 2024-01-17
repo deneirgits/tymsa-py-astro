@@ -1,5 +1,5 @@
-export function formatTime(seconds: number) {
-  if (isNaN(seconds) || seconds <= 0) {
+export function timerDisplay(seconds: number) {
+  if (isNaN(seconds) || seconds < 0) {
     return "Invalid input";
   }
 

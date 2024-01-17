@@ -70,7 +70,11 @@
       <input type="hidden" name="id" bind:value={id} />
       <label>
         <span>Project</span>
-        <select name="project" value={project} bind:this={projectSelect}>
+        <select
+          name="project"
+          value={project}
+          bind:this={projectSelect}
+          class="bg-transparent">
           <option value="0">--------</option>
           {#each projects as project}
             <option value={project.id}>{project.name}</option>
@@ -84,7 +88,8 @@
           type="text"
           name="note"
           autocomplete="off"
-          maxlength="30" />
+          maxlength="30"
+          class="bg-transparent" />
       </label>
       <div class="modal-action">
         <button class="btn btn-primary" type="submit">Save</button>

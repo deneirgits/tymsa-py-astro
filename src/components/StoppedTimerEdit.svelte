@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { PreviousTimer, Timer } from "../client";
-  import { formatTime } from "../utils/formatTime";
+  import { timerDisplay } from "../utils/time";
 
   export let timer: Timer | PreviousTimer, duration: number;
 
@@ -8,11 +8,11 @@
 </script>
 
 {#if timer}
-  <div class="flex flex-col cursor-pointer w-full text-left py-1">
+  <!-- <div class="flex w-full"> -->
+  <div class="flex flex-col cursor-pointer text-left py-1">
     <div class="flex w-full">
-      <strong class="text-sm md:text-lg">
-        <!-- {formatTime(timer.timesince)} -->
-        {formatTime(duration)}
+      <strong class={`text-sm md:text-lg ${duration <= 0 ? "text-error" : ""}`}>
+        {timerDisplay(duration)}
       </strong>
 
       {#if project}
@@ -34,5 +34,12 @@
         {timer.note}
       </p>
     </div>
+    <!-- </div> -->
+
+    <!-- {#if duration == 0}
+      <div class="text-xs w-full text-right align-middle py-1 md:text-sm">
+        Invalid duration
+      </div>
+    {/if} -->
   </div>
 {/if}

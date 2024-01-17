@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import type { Timer } from "../client";
-  import { startTimeForList } from "../utils/formatTime";
+  import { startTimeForList } from "../utils/time";
 
   export let timer: Timer;
   const dispatch = createEventDispatcher();

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import type { Timer } from "../client";
-  import { datetimeForEdit } from "../utils/formatTime";
+  import { datetimeForEdit } from "../utils/time";
   import StoppedTimerEdit from "./StoppedTimerEdit.svelte";
 
   let timer: Timer,
@@ -21,12 +21,16 @@
   }
   export async function closeModal() {
     modal.classList.remove("modal-open");
-    timeInput.focus();
+    message = "";
     dispatch("modalClosed");
   }
 
   async function submitForm(e: SubmitEvent) {
     const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const datetime = new Date(formData.get("datetime") as string);
+
+    formData.set("datetime", datetime.toUTCString());
+
     const res = await fetch("/api/timer/editTime", {
       method: "post",
       body: formData,
@@ -50,12 +54,12 @@
       const end = new Date(timer.endDatetime);
       const start = new Date(datetime);
 
-      duration = (end.valueOf() - start.valueOf()) / 1000;
+      duration = Math.round((end.valueOf() - start.valueOf()) / 1000);
     }
 
     const end = new Date(datetime);
     const start = new Date(timer.previous.startDatetime);
-    prevDuration = (end.valueOf() - start.valueOf()) / 1000;
+    prevDuration = Math.round((end.valueOf() - start.valueOf()) / 1000);
   }
   async function handleKeydown(e: KeyboardEvent) {
     if (e.key == "Escape" && modal.classList.contains("modal-open")) {
@@ -88,7 +92,7 @@
         <StoppedTimerEdit {timer} {duration} />
       {/if}
 
-      <div class="divider divider-end my-0">
+      <div class="divider divider-end my-2">
         <input
           bind:this={timeInput}
           on:change={handleOnChange}
@@ -96,7 +100,7 @@
           name="datetime"
           step="1"
           bind:value={datetime}
-          class="text-xs text-black w-full p-1 border-none outline-none bg-none focus:ring-0" />
+          class="text-xs bg-transparent w-full p-1 border-none outline-none bg-none focus:ring-0" />
       </div>
       {#if timer}
         <input

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { formatTime } from "../utils/formatTime";
+  import { timerDisplay } from "../utils/time";
   import type { Timer } from "../client";
 
   export let interval: NodeJS.Timeout, timer: Timer;
@@ -21,7 +21,7 @@
 
   $: seconds = timer.timesince;
   $: resetInterval(timer);
-  $: display = formatTime(seconds);
+  $: display = timerDisplay(seconds);
 </script>
 
 <strong

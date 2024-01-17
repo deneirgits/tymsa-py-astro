@@ -1,6 +1,6 @@
 
 import type { APIContext, APIRoute } from "astro";
-import { TimersApi, type TimerUpdate } from "../../../client";
+import { TimersApi } from "../../../client";
 import { getConfig } from "../../../utils/config";
 
 export const POST: APIRoute = async ({ request, cookies }: APIContext) => {
