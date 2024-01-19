@@ -1,2 +1,2 @@
 # Tymsa
-A time-tracking app
+A personal time-tracking app
